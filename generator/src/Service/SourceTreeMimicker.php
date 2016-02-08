@@ -47,7 +47,6 @@ class SourceTreeMimicker
      */
     public function getSrcFileRelativePath(\SplFileInfo $file)
     {
-        echo $this->srcRoot." ÷ ".$file."\n";
         return substr($file->getPathName(), strlen($this->srcRoot) + 1);
     }
 
@@ -71,7 +70,6 @@ class SourceTreeMimicker
     public function ensureDestinationDirectoryIsWritable($absolutePath)
     {
         $destDir = dirname($absolutePath);
-        echo ">>>".$absolutePath.">>>".$destDir."\n";
 
         if (!is_dir($destDir) && !mkdir($destDir, 0700, true)) {
             throw new \Exception(sprintf(
