@@ -7,12 +7,8 @@
 
 require_once __DIR__.'/generator/bootstrap.php';
 
-use \Heartsentwined\FileSystemManager\FileSystemManager;
-
-foreach (FileSystemManager::fileIterator('src') as $filePath) {
-
-    $file = new \SplFileInfo(__DIR__.'/'.$filePath);
-
+foreach ($srcTree as $file)
+{
     if (!$file->isFile()) {
         continue;
     }
