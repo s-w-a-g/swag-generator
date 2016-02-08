@@ -1,0 +1,220 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "9faa1810ca4812ad7359b4a099e4232b",
+    "content-hash": "d7035361af439f8b0b30a085c76b452e",
+    "packages": [
+        {
+            "name": "heartsentwined/arg-validator",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heartsentwined/php-arg-validator.git",
+                "reference": "198be54e92e5c2e3c4d6cf119ebc83ef377a2557"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heartsentwined/php-arg-validator/zipball/198be54e92e5c2e3c4d6cf119ebc83ef377a2557",
+                "reference": "198be54e92e5c2e3c4d6cf119ebc83ef377a2557",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Heartsentwined\\ArgValidator": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "heartsentwined",
+                    "email": "heartsentwined@cogito-lab.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Validate function arguments, extending typehinting capabilities of PHP.",
+            "homepage": "https://github.com/heartsentwined/arg-validator",
+            "keywords": [
+                "argument",
+                "typehint",
+                "typehinting",
+                "validate",
+                "validator"
+            ],
+            "time": "2012-10-03 19:54:08"
+        },
+        {
+            "name": "heartsentwined/file-system-manager",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heartsentwined/php-file-system-manager.git",
+                "reference": "f72ccaa4dd3eb939d9dfc009bf330db799d2274d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heartsentwined/php-file-system-manager/zipball/f72ccaa4dd3eb939d9dfc009bf330db799d2274d",
+                "reference": "f72ccaa4dd3eb939d9dfc009bf330db799d2274d",
+                "shasum": ""
+            },
+            "require": {
+                "heartsentwined/arg-validator": "1.*",
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Heartsentwined\\FileSystemManager": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "heartsentwined",
+                    "email": "heartsentwined@cogito-lab.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A collection of file and directory management functions.",
+            "homepage": "https://github.com/heartsentwined/file-system-manager",
+            "keywords": [
+                "dir",
+                "directory",
+                "file",
+                "manager",
+                "system"
+            ],
+            "time": "2012-10-03 19:54:08"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "3cf0709d7fe936e97bee9e954382e449003f1d9a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/3cf0709d7fe936e97bee9e954382e449003f1d9a",
+                "reference": "3cf0709d7fe936e97bee9e954382e449003f1d9a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Yaml\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Yaml Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-02-02 13:44:19"
+        },
+        {
+            "name": "twig/twig",
+            "version": "v1.24.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/Twig.git",
+                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
+                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.7"
+            },
+            "require-dev": {
+                "symfony/debug": "~2.7",
+                "symfony/phpunit-bridge": "~2.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.24-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Twig_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Armin Ronacher",
+                    "email": "armin.ronacher@active-4.com",
+                    "role": "Project Founder"
+                },
+                {
+                    "name": "Twig Team",
+                    "homepage": "http://twig.sensiolabs.org/contributors",
+                    "role": "Contributors"
+                }
+            ],
+            "description": "Twig, the flexible, fast, and secure template language for PHP",
+            "homepage": "http://twig.sensiolabs.org",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2016-01-25 21:22:18"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

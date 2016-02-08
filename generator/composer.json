@@ -1,0 +1,7 @@
+{
+    "require": {
+        "twig/twig": "~1.0",
+        "heartsentwined/file-system-manager": "^1.1",
+        "symfony/yaml": "^3.0"
+    }
+}
