@@ -16,7 +16,14 @@ $config = ConfigShaper::shapeConfig(realpath(__DIR__.'/..'), '/config.yml');
 
 $mirror = new SourceTreeMimicker($config['srcRoot'], $config['siteRoot']);
 $copier = new AssetCopier($mirror);
-$renderer = new PageRenderer($mirror);
+
+$loader = new \Twig_Loader_Filesystem($config['srcRoot']);
+$twig = new \Twig_Environment($loader, [
+    'cache' => false,
+]);
+
+$renderer = new PageRenderer($twig, $mirror);
+
 
 $srcTree = new \RecursiveIteratorIterator(
     new \RecursiveDirectoryIterator($config['srcRoot'], \FilesystemIterator::SKIP_DOTS)
