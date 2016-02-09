@@ -1,6 +1,6 @@
 ---
 siteRoot: static_website
-srcRoot:  src
+srcRoot:  source
 
 # file that we don't want to be copied
 ignored_files:
