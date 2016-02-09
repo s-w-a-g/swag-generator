@@ -1,8 +1,9 @@
 ---
 siteRoot: static_website
 srcRoot:  source
+dataRoot: data
 
-# file that we don't want to be copied
+# file that we don't want to be copied (extension without dot)
 ignored_files:
     - gitkeep
     - DS_Store

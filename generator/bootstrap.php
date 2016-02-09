@@ -7,6 +7,7 @@
 
 require_once __DIR__.'/autoload.php';
 
+use Swag\Generator;
 use Swag\Service\AssetCopier;
 use Swag\Service\ConfigShaper;
 use Swag\Service\PageRenderer;
@@ -24,7 +25,4 @@ $twig = new \Twig_Environment($loader, [
 
 $renderer = new PageRenderer($twig, $mirror);
 
-
-$srcTree = new \RecursiveIteratorIterator(
-    new \RecursiveDirectoryIterator($config['srcRoot'], \FilesystemIterator::SKIP_DOTS)
-);
+$app = new Generator($config, $copier, $renderer);
