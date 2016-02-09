@@ -41,9 +41,10 @@ class PageRenderer
     /**
      * Render a Twig template and move it to the website directory
      *
-     * @param  \SplFileInfo $file Twig source file
+     * @param \SplFileInfo $file Twig source file
+     * @param array $data user variables for template engine
      */
-    public function render(\SplFileInfo $file)
+    public function render(\SplFileInfo $file, array $data)
     {
         echo 'rendering '.$file;
 
@@ -51,7 +52,7 @@ class PageRenderer
         $destination = $this->mirror->generateDestinationPathName($this->trimTwigExtension($relativePath));
         $this->mirror->ensureDestinationDirectoryIsWritable($destination);
 
-        $content = $this->twig->render($relativePath, []);
+        $content = $this->twig->render($relativePath, $data);
 
         file_put_contents($destination, $content);
     }

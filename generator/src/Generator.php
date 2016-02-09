@@ -9,6 +9,7 @@ namespace Swag;
 
 use Swag\Service\AssetCopier;
 use Swag\Service\PageRenderer;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * App main class
@@ -20,6 +21,12 @@ class Generator
      * @var array
      */
     private $config;
+
+    /**
+     * The user data gathered in an array to be given to the templates
+     * @var array
+     */
+    private $data;
 
     /**
      * @var AssetCopier
@@ -54,7 +61,7 @@ class Generator
     public function generateStaticWebsite()
     {
         # Fetch user data
-        $this->getData();
+        $this->gatherUserData();
 
         # Process user layout and assets
         $this->processSourceFiles();
@@ -87,22 +94,36 @@ class Generator
                 continue;
             }
 
-            $this->renderer->render($file);
+            $this->renderer->render($file, $this->data);
         }
     }
 
-    private function getData()
+    /**
+     * Browse data directory to gather data in an array for the template engine
+     */
+    private function gatherUserData()
     {
-        $dataRoot = $this->config['srcRoot'];
-        $ignoredFiles = $this->config['ignored_files'];
+        $dataRoot = $this->config['dataRoot'];
 
         $dataTree = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($dataRoot, \FilesystemIterator::SKIP_DOTS)
         );
 
-        foreach ($sourceTree as $file)
+        foreach ($dataTree as $file)
         {
-            echo $file."\n";
+            if (!$file->isFile()) {
+                continue;
+            }
+
+            #handling yml only for now
+            if ($file->getExtension() !== 'yml') {
+                continue;
+            }
+
+            $index = $file->getBasename('.'.$file->getExtension());
+            $value = Yaml::parse(file_get_contents($file));
+
+            $this->data[$index] = $value;
         }
     }
 }
