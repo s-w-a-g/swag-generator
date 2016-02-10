@@ -16,14 +16,20 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ConfigShaper
 {
-    static public function shapeConfig($root)
+    /**
+     * build app config
+     *
+     * @param  string $root the directory holding the generator and user sources
+     *
+     * @return array
+     */
+    public static function shapeConfig($root)
     {
         $config = Yaml::parse(file_get_contents($root.'/generator/config.yml'));
 
-        $config['srcRoot'] = $root.'/'.$config['srcRoot'];
+        $config['srcRoot']  = $root.'/'.$config['srcRoot'];
         $config['siteRoot'] = $root.'/'.$config['siteRoot'];
 
         return $config;
     }
-
 }

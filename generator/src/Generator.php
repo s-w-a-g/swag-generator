@@ -41,8 +41,8 @@ class Generator
     /**
      * Construct
      *
-     * @param array $config
-     * @param AssetCopier $copier
+     * @param array        $config
+     * @param AssetCopier  $copier
      * @param PageRenderer $renderer
      */
     public function __construct(
@@ -50,8 +50,8 @@ class Generator
         AssetCopier $copier,
         PageRenderer $renderer
     ) {
-        $this->config = $config;
-        $this->copier = $copier;
+        $this->config   = $config;
+        $this->copier   = $copier;
         $this->renderer = $renderer;
     }
 
@@ -60,10 +60,10 @@ class Generator
      */
     public function generateStaticWebsite()
     {
-        # Fetch user data
+        // Fetch user data
         $this->gatherUserData();
 
-        # Process user layout and assets
+        // Process user layout and assets
         $this->processSourceFiles();
     }
 
@@ -72,15 +72,14 @@ class Generator
      */
     private function processSourceFiles()
     {
-        $sourceRoot = $this->config['srcRoot'];
+        $sourceRoot   = $this->config['srcRoot'];
         $ignoredFiles = $this->config['ignored_files'];
 
         $sourceTree = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($sourceRoot, \FilesystemIterator::SKIP_DOTS)
         );
 
-        foreach ($sourceTree as $file)
-        {
+        foreach ($sourceTree as $file) {
             if (!$file->isFile()) {
                 continue;
             }
@@ -109,13 +108,12 @@ class Generator
             new \RecursiveDirectoryIterator($dataRoot, \FilesystemIterator::SKIP_DOTS)
         );
 
-        foreach ($dataTree as $file)
-        {
+        foreach ($dataTree as $file) {
             if (!$file->isFile()) {
                 continue;
             }
 
-            #handling yml only for now
+            // handling yml only for now
             if ($file->getExtension() !== 'yml') {
                 continue;
             }

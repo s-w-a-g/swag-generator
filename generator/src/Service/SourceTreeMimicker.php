@@ -30,11 +30,12 @@ class SourceTreeMimicker
     /**
      * __construct
      *
-     * @param $srcRoot The assets root directory
+     * @param string $srcRoot  The assets root directory
+     * @param string $siteRoot The static website root directory
      */
     public function __construct($srcRoot, $siteRoot)
     {
-        $this->srcRoot = $srcRoot;
+        $this->srcRoot  = $srcRoot;
         $this->siteRoot = $siteRoot;
     }
 
@@ -65,7 +66,7 @@ class SourceTreeMimicker
     /**
      * Insures destination directory for asset exists. Creates it otherwise.
      *
-     * @param  \SplFileInfo $file
+     * @param string $absolutePath full path of a file
      */
     public function ensureDestinationDirectoryIsWritable($absolutePath)
     {
@@ -78,5 +79,4 @@ class SourceTreeMimicker
             ), 1);
         }
     }
-
 }

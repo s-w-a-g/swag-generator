@@ -34,7 +34,7 @@ class PageRenderer
      */
     public function __construct(\Twig_Environment $twig, SourceTreeMimicker $mirror)
     {
-        $this->twig = $twig;
+        $this->twig   = $twig;
         $this->mirror = $mirror;
     }
 
@@ -42,14 +42,14 @@ class PageRenderer
      * Render a Twig template and move it to the website directory
      *
      * @param \SplFileInfo $file Twig source file
-     * @param array $data user variables for template engine
+     * @param array        $data user variables for template engine
      */
     public function render(\SplFileInfo $file, array $data)
     {
         echo 'rendering '.$file;
 
         $relativePath = $this->mirror->getSrcFileRelativePath($file);
-        $destination = $this->mirror->generateDestinationPathName($this->trimTwigExtension($relativePath));
+        $destination  = $this->mirror->generateDestinationPathName($this->trimTwigExtension($relativePath));
         $this->mirror->ensureDestinationDirectoryIsWritable($destination);
 
         $content = $this->twig->render($relativePath, $data);

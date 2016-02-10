@@ -29,11 +29,16 @@ class AssetCopier
         $this->mirror = $mirror;
     }
 
+    /**
+     * copy an asset from the source folder to its equivalent location in the website file tree
+     *
+     * @param  \SplFileInfo $file The file to move
+     */
     public function copy(\SplFileInfo $file)
     {
         echo 'copying '.$file."\n";
         $relativePath = $this->mirror->getSrcFileRelativePath($file);
-        $destination = $this->mirror->generateDestinationPathName($relativePath);
+        $destination  = $this->mirror->generateDestinationPathName($relativePath);
 
         $this->mirror->ensureDestinationDirectoryIsWritable($destination);
 
