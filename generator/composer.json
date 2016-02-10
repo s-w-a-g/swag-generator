@@ -1,6 +1,8 @@
 {
     "require": {
         "twig/twig": "~1.0",
-        "symfony/yaml": "^3.0"
+        "symfony/yaml": "^3.0",
+        "m6web/coke": "^2.1",
+        "m6web/symfony2-coding-standard": "^3.1"
     }
 }
