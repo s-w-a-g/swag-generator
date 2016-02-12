@@ -27,8 +27,9 @@ class ConfigShaper
     {
         $config = Yaml::parse(file_get_contents($root.'/generator/config.yml'));
 
-        $config['srcRoot']  = $root.'/'.$config['srcRoot'];
-        $config['siteRoot'] = $root.'/'.$config['siteRoot'];
+        $config['srcRoot']  = new \SplFileInfo($root.'/'.$config['srcRoot']);
+        $config['dataRoot'] = new \SplFileInfo($root.'/'.$config['dataRoot']);
+        $config['siteRoot'] = new \SplFileInfo($root.'/'.$config['siteRoot']);
 
         return $config;
     }

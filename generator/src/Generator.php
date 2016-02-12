@@ -7,6 +7,7 @@
 
 namespace Swag;
 
+use Swag\Model\Data\DataFactory;
 use Swag\Service\AssetCopier;
 use Swag\Service\PageRenderer;
 use Symfony\Component\Yaml\Yaml;
@@ -102,26 +103,7 @@ class Generator
      */
     private function gatherUserData()
     {
-        $dataRoot = $this->config['dataRoot'];
-
-        $dataTree = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dataRoot, \FilesystemIterator::SKIP_DOTS)
-        );
-
-        foreach ($dataTree as $file) {
-            if (!$file->isFile()) {
-                continue;
-            }
-
-            // handling yml only for now
-            if ($file->getExtension() !== 'yml') {
-                continue;
-            }
-
-            $index = $file->getBasename('.'.$file->getExtension());
-            $value = Yaml::parse(file_get_contents($file));
-
-            $this->data[$index] = $value;
-        }
+        $data       = DataFactory::create($this->config['dataRoot']);
+        $this->data = $data->getValue();
     }
 }

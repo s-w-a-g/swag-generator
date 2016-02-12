@@ -16,24 +16,24 @@ class SourceTreeMimicker
     /**
      * The assets root directory
      *
-     * @var string
+     * @var \SplFileInfo
      */
     private $srcRoot;
 
     /**
      * The website root folder
      *
-     * @var string
+     * @var \SplFileInfo
      */
     private $siteRoot;
 
     /**
      * __construct
      *
-     * @param string $srcRoot  The assets root directory
-     * @param string $siteRoot The static website root directory
+     * @param \SplFileInfo $srcRoot  The assets root directory
+     * @param \SplFileInfo $siteRoot The static website root directory
      */
-    public function __construct($srcRoot, $siteRoot)
+    public function __construct(\SplFileInfo $srcRoot, \SplFileInfo $siteRoot)
     {
         $this->srcRoot  = $srcRoot;
         $this->siteRoot = $siteRoot;
