@@ -9,9 +9,10 @@ namespace Swag;
 
 use Swag\Exception\InitException;
 use Swag\Model\Data\DataFactory;
-use Swag\Service\AssetCopier;
+use Swag\Model\Page\Engine;
+use Swag\Model\Page\AssetHandler;
+use Swag\Model\Page\TwigHandler;
 use Swag\Service\ResourcesConformer;
-use Swag\Service\PageRenderer;
 use Swag\Service\SourceTreeMimicker;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -33,27 +34,19 @@ class Generator
     private $data;
 
     /**
-     * @var AssetCopier
-     */
-    private $copier;
-
-    /**
      * @var PageRenderer
      */
-    private $renderer;
+    private $engine;
 
     /**
      * Construct
      *
-     * @param AssetCopier  $copier
-     * @param PageRenderer $renderer
+     * @param PageRenderer $engine
      */
     public function __construct(
-        AssetCopier $copier,
-        PageRenderer $renderer
+        Engine $engine
     ) {
-        $this->copier   = $copier;
-        $this->renderer = $renderer;
+        $this->engine = $engine;
     }
 
     /**
@@ -71,21 +64,20 @@ class Generator
 
             $mirror = new SourceTreeMimicker($resources['pages'], $resources['destination']);
 
-            // Asset Copier
-            $copier = new AssetCopier($mirror);
-
-            // Page Renderer
-            $loader   = new \Twig_Loader_Filesystem($resources['pages']);
-            $twig     = new \Twig_Environment($loader, [
+            $loader = new \Twig_Loader_Filesystem($resources['pages']);
+            $twig   = new \Twig_Environment($loader, [
                 'cache' => false,
             ]);
-            $renderer = new PageRenderer($twig, $mirror);
+
+            $pageEngine = new Engine();
+            $pageEngine->addPageHandler(new TwigHandler($twig, $mirror));
+            $pageEngine->addPageHandler(new AssetHandler($mirror));
         } catch (InitException $e) {
             $output->writeln('<error>'.$e->getMessage().'</>');
             die;
         }
 
-        $app = new Generator($copier, $renderer);
+        $app = new Generator($pageEngine);
         $app->generateStaticWebsite($resources);
     }
 
@@ -100,45 +92,20 @@ class Generator
         $data = $this->gatherUserData($resources['data']);
 
         // Process user layout and assets
-        $this->processPages($resources['pages']);
-    }
-
-    /**
-     * Browse source directory to process user files
-     */
-    private function processPages($pagesLocation)
-    {
-        $sourceTree = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($pagesLocation, \FilesystemIterator::SKIP_DOTS)
-        );
-
-        foreach ($sourceTree as $file) {
-            if (!$file->isFile()) {
-                continue;
-            }
-
-            // Skip hidden files
-            if (strpos($file->getExtension(), '.') === 0) {
-                continue;
-            }
-
-            if ($file->getExtension() !== 'twig') {
-                $this->copier->copy($file);
-                continue;
-            }
-
-            $this->renderer->render($file, $this->data);
-        }
+        $this->engine->processPages($resources['pages'], $data);
     }
 
     /**
      * Browse data directory to gather data in an array for the template engine
      *
      * @params \SplFileInfo $dataLocation
+     *
+     * @return array
      */
     private function gatherUserData($dataLocation)
     {
-        $data       = DataFactory::create($dataLocation);
-        $this->data = $data->getValue();
+        $data = DataFactory::create($dataLocation);
+
+        return $data->getValue();
     }
 }

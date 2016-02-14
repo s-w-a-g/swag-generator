@@ -16,5 +16,4 @@ $app
     '--source' => 'Absolute path to your source directory.',
 ]);
 
-
 $app->run();

@@ -5,12 +5,16 @@
  * @License: view License file if any
  */
 
-namespace Swag\Service;
+namespace Swag\Model\Page;
+
+use Swag\Exception\InvalidPageException;
+use Swag\Model\Page\PageHandlerInterface;
+use Swag\Service\SourceTreeMimicker;
 
 /**
  * Renders twig templates to pages
  */
-class PageRenderer
+class TwigHandler implements PageHandlerInterface
 {
     /**
      * the twig template engine
@@ -39,21 +43,25 @@ class PageRenderer
     }
 
     /**
-     * Render a Twig template and move it to the website directory
-     *
-     * @param \SplFileInfo $file Twig source file
-     * @param array        $data user variables for template engine
+     * {@inheritdoc}
      */
-    public function render(\SplFileInfo $file, array $data)
+    public function apply(\SplFileInfo $file)
     {
-        echo 'rendering '.$file;
+        return $file->getExtension() === 'twig';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function processFile(\SplFileInfo $file, $data = null)
+    {
 
         $relativePath = $this->mirror->getSrcFileRelativePath($file);
         $destination  = $this->mirror->generateDestinationPathName($this->trimTwigExtension($relativePath));
         $this->mirror->ensureDestinationDirectoryIsWritable($destination);
 
+        echo "\nRendering ".$relativePath;
         $content = $this->twig->render($relativePath, $data);
-
         file_put_contents($destination, $content);
     }
 
