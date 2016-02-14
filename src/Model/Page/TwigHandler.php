@@ -10,6 +10,7 @@ namespace Swag\Model\Page;
 use Swag\Exception\InvalidPageException;
 use Swag\Model\Page\PageHandlerInterface;
 use Swag\Service\SourceTreeMimicker;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Renders twig templates to pages
@@ -47,7 +48,16 @@ class TwigHandler implements PageHandlerInterface
      */
     public function apply(\SplFileInfo $file)
     {
-        return $file->getExtension() === 'twig';
+        if ($file->getExtension() !== 'twig') {
+            return false;
+        }
+
+        $meta = $this->getMeta($file);
+        if (!$meta) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -63,6 +73,28 @@ class TwigHandler implements PageHandlerInterface
         echo "\nRendering ".$relativePath;
         $content = $this->twig->render($relativePath, $data);
         file_put_contents($destination, $content);
+    }
+
+    /**
+     * Get the Twig meta (a comment starting with meta)
+     *
+     * @param  \SplFileInfo $file the Twig file
+     *
+     * @return array
+     */
+    private function getMeta(\SplFileInfo $file)
+    {
+        $contents = file_get_contents($file);
+
+        preg_match('/\{# meta(.+)\n#\}/s', $contents, $matches);
+
+        if (!isset($matches[1])) {
+            return null;
+        }
+
+        $meta = Yaml::parse($matches[1]);
+
+        return $meta;
     }
 
     /**

@@ -43,6 +43,11 @@ class AssetHandler implements PageHandlerInterface
             return false;
         }
 
+        // Discard Twig files
+        if ($file->getExtension() === 'twig') {
+            return false;
+        }
+
         return true;
     }
 

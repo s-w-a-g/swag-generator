@@ -34,14 +34,14 @@ class Generator
     private $data;
 
     /**
-     * @var PageRenderer
+     * @var Engine
      */
     private $engine;
 
     /**
      * Construct
      *
-     * @param PageRenderer $engine
+     * @param Engine $engine
      */
     public function __construct(
         Engine $engine

@@ -65,7 +65,7 @@ class Engine
         }
 
         throw new InvalidPageException(sprintf(
-            "Couldn't find any handler for %s",
+            "\nCouldn't find any handler for %s",
             $file
         ));
     }
