@@ -32,6 +32,12 @@ class DataFactory
                 return new DataYaml($file);
         }
 
+        switch ($file->getExtension()) {
+            case 'md':
+            case 'mdown':
+                return new DataMarkdown($file);
+        }
+
         throw new InvalidDataFileException($file);
     }
 }
