@@ -6,6 +6,15 @@
  * @License: view License file if any
  */
 
-require_once __DIR__.'/generator/bootstrap.php';
+require_once __DIR__.'/autoload.php';
 
-$app->generateStaticWebsite();
+$app = new Silly\Application();
+
+$app
+->command('generate [--source=]', ['Swag\\Generator', 'main'])
+->descriptions('Generate your Static Website with SWaG!', [
+    '--source' => 'Absolute path to your source directory.',
+]);
+
+
+$app->run();

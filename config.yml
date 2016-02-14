@@ -1,7 +1,8 @@
 ---
-siteRoot: static_website
-srcRoot:  source
-dataRoot: data
+user:
+    data:        data
+    pages:       pages
+    destination: static_website
 
 # file that we don't want to be copied (extension without dot)
 ignored_files:

@@ -7,10 +7,13 @@
 
 namespace Swag;
 
+use Swag\Exception\InitException;
 use Swag\Model\Data\DataFactory;
 use Swag\Service\AssetCopier;
+use Swag\Service\ResourcesConformer;
 use Swag\Service\PageRenderer;
-use Symfony\Component\Yaml\Yaml;
+use Swag\Service\SourceTreeMimicker;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * App main class
@@ -42,42 +45,71 @@ class Generator
     /**
      * Construct
      *
-     * @param array        $config
      * @param AssetCopier  $copier
      * @param PageRenderer $renderer
      */
     public function __construct(
-        array $config,
         AssetCopier $copier,
         PageRenderer $renderer
     ) {
-        $this->config   = $config;
         $this->copier   = $copier;
         $this->renderer = $renderer;
     }
 
     /**
-     * Main method running the whole generation
+     * Main app controller
+     *
+     * @param  string          $source the user resources location
+     * @param  OutputInterface $output
      */
-    public function generateStaticWebsite()
+    public static function main($source, OutputInterface $output)
+    {
+        $resourcesLocation = $source;
+
+        try {
+            $resources = ResourcesConformer::init($resourcesLocation, __DIR__.'/../config.yml');
+
+            $mirror = new SourceTreeMimicker($resources['pages'], $resources['destination']);
+
+            // Asset Copier
+            $copier = new AssetCopier($mirror);
+
+            // Page Renderer
+            $loader   = new \Twig_Loader_Filesystem($resources['pages']);
+            $twig     = new \Twig_Environment($loader, [
+                'cache' => false,
+            ]);
+            $renderer = new PageRenderer($twig, $mirror);
+        } catch (InitException $e) {
+            $output->writeln('<error>'.$e->getMessage().'</>');
+            die;
+        }
+
+        $app = new Generator($copier, $renderer);
+        $app->generateStaticWebsite($resources);
+    }
+
+    /**
+     * Main method running the whole generation
+     *
+     * @param array $resources The config file defining user resources locations
+     */
+    public function generateStaticWebsite($resources)
     {
         // Fetch user data
-        $this->gatherUserData();
+        $data = $this->gatherUserData($resources['data']);
 
         // Process user layout and assets
-        $this->processSourceFiles();
+        $this->processPages($resources['pages']);
     }
 
     /**
      * Browse source directory to process user files
      */
-    private function processSourceFiles()
+    private function processPages($pagesLocation)
     {
-        $sourceRoot   = $this->config['srcRoot'];
-        $ignoredFiles = $this->config['ignored_files'];
-
         $sourceTree = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($sourceRoot, \FilesystemIterator::SKIP_DOTS)
+            new \RecursiveDirectoryIterator($pagesLocation, \FilesystemIterator::SKIP_DOTS)
         );
 
         foreach ($sourceTree as $file) {
@@ -85,7 +117,8 @@ class Generator
                 continue;
             }
 
-            if (in_array($file->getExtension(), $ignoredFiles)) {
+            // Skip hidden files
+            if (strpos($file->getExtension(), '.') === 0) {
                 continue;
             }
 
@@ -100,10 +133,12 @@ class Generator
 
     /**
      * Browse data directory to gather data in an array for the template engine
+     *
+     * @params \SplFileInfo $dataLocation
      */
-    private function gatherUserData()
+    private function gatherUserData($dataLocation)
     {
-        $data       = DataFactory::create($this->config['dataRoot']);
+        $data       = DataFactory::create($dataLocation);
         $this->data = $data->getValue();
     }
 }
