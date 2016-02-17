@@ -5,14 +5,14 @@
  * @License: view License file if any
  */
 
-namespace Swag\Model\Data;
+namespace Swag\Model\Data\Handler;
 
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * User Data as Yaml file
  */
-class DataYaml extends AbstractData
+class YamlHandler extends AbstractDataHandler
 {
     /**
      * {@inheritdoc}

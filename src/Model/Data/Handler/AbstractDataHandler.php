@@ -5,12 +5,12 @@
  * @License: view License file if any
  */
 
-namespace Swag\Model\Data;
+namespace Swag\Model\Data\Handler;
 
 /**
  * Build config for a file or directory
  */
-abstract class AbstractData
+abstract class AbstractDataHandler
 {
     /**
      * entry (file|directory) in the user data directory

@@ -23,19 +23,19 @@ class DataFactory
     public static function create(\SplFileInfo $file)
     {
         if ($file->isDir()) {
-            return new DataCluster($file);
+            return new Handler\ClusterHandler($file);
         }
 
         switch ($file->getExtension()) {
             case 'yml':
             case 'yaml':
-                return new DataYaml($file);
+                return new Handler\YamlHandler($file);
         }
 
         switch ($file->getExtension()) {
             case 'md':
             case 'mdown':
-                return new DataMarkdown($file);
+                return new Handler\MarkdownHandler($file);
         }
 
         throw new InvalidDataFileException($file);

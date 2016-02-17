@@ -5,12 +5,14 @@
  * @License: view License file if any
  */
 
-namespace Swag\Model\Data;
+namespace Swag\Model\Data\Handler;
+
+use Swag\Model\Data\DataFactory;
 
 /**
  * Build config for a file or directory
  */
-class DataCluster extends AbstractData
+class ClusterHandler extends AbstractDataHandler
 {
     /**
      * {@inheritdoc}
