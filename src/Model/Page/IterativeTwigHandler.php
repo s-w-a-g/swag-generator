@@ -25,7 +25,7 @@ class IterativeTwigHandler extends TwigHandler
         }
 
         $meta = $this->getMeta($file);
-        if (!$meta) {
+        if (empty($meta['generate'])) {
             return false;
         }
 

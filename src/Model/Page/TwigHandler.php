@@ -52,7 +52,7 @@ class TwigHandler implements PageHandlerInterface
         }
 
         $meta = $this->getMeta($file);
-        if (!$meta) {
+        if (empty($meta['generate'])) {
             return false;
         }
 
