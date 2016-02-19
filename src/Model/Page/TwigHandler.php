@@ -7,7 +7,6 @@
 
 namespace Swag\Model\Page;
 
-use Swag\Exception\InvalidPageException;
 use Swag\Model\Page\PageHandlerInterface;
 use Swag\Service\SourceTreeMimicker;
 use Symfony\Component\Yaml\Yaml;
@@ -22,14 +21,14 @@ class TwigHandler implements PageHandlerInterface
      *
      * @var \Twig_Environment
      */
-    private $twig;
+    protected $twig;
 
     /**
      * Service handling consistency between source and website directories
      *
      * @var SourceTreeMimicker
      */
-    private $mirror;
+    protected $mirror;
 
     /**
      * Construct
@@ -82,7 +81,7 @@ class TwigHandler implements PageHandlerInterface
      *
      * @return array
      */
-    private function getMeta(\SplFileInfo $file)
+    protected function getMeta(\SplFileInfo $file)
     {
         $contents = file_get_contents($file);
 
@@ -104,7 +103,7 @@ class TwigHandler implements PageHandlerInterface
      *
      * @return string
      */
-    private function trimTwigExtension($path)
+    protected function trimTwigExtension($path)
     {
         return substr($path, 0, -5);
     }

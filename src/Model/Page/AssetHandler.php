@@ -7,7 +7,6 @@
 
 namespace Swag\Model\Page;
 
-use Swag\Exception\InvalidPageException;
 use Swag\Model\Page\PageHandlerInterface;
 use Swag\Service\SourceTreeMimicker;
 

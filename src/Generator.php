@@ -23,18 +23,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Generator
 {
     /**
-     * The app config defining env and other parameters
-     * @var array
-     */
-    private $config;
-
-    /**
-     * The user data gathered in an array to be given to the templates
-     * @var array
-     */
-    private $data;
-
-    /**
      * @var Engine
      */
     private $engine;
@@ -76,7 +64,7 @@ class Generator
             $pageEngine->addPageHandler(new AssetHandler($mirror));
         } catch (InitException $e) {
             $output->writeln('<error>'.$e->getMessage().'</>');
-            die;
+            die(1);
         }
 
         $app = new Generator($pageEngine);

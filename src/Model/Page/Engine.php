@@ -7,7 +7,7 @@
 
 namespace Swag\Model\Page;
 
-use Swag\Exception\InvalidPageException;
+use Swag\Model\Page\Exception\InvalidPageException;
 use Swag\Model\Page\PageHandlerInterface;
 
 /**
@@ -56,6 +56,14 @@ class Engine
         }
     }
 
+    /**
+     * Determine the right handler for the file
+     * First to match is the one
+     *
+     * @param \SplFileInfo $file
+     *
+     * @return PageHandlerInterface
+     */
     private function getHandlerForFile(\SplFileInfo $file)
     {
         foreach ($this->pageHandlers as $handler) {

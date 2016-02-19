@@ -5,7 +5,9 @@
  * @License: view License file if any
  */
 
-namespace Swag\Exception;
+namespace Swag\Model\Page\Exception;
+
+use Swag\Exception\SwagException;
 
 /**
  * Basic Swag Exception
