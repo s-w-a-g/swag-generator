@@ -5,7 +5,7 @@
  * @License: view License file if any
  */
 
-namespace Swag\Model\Data;
+namespace Swag\Model\Data\Exception;
 
 /**
  * Invalid file for building a data node exception

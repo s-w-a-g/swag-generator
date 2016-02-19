@@ -7,6 +7,8 @@
 
 namespace Swag\Model\Data;
 
+use Swag\Model\Data\Exception\InvalidDataFileException;
+
 /**
  * Build config for a file or directory
  */

@@ -8,6 +8,7 @@
 namespace Swag\Model\Data\Handler;
 
 use Swag\Model\Data\DataFactory;
+use Swag\Model\Data\Exception\InvalidDataFileException;
 
 /**
  * Build config for a file or directory

@@ -9,8 +9,9 @@ namespace Swag;
 
 use Swag\Exception\InitException;
 use Swag\Model\Data\DataFactory;
-use Swag\Model\Page\Engine;
 use Swag\Model\Page\AssetHandler;
+use Swag\Model\Page\Engine;
+use Swag\Model\Page\IterativeTwigHandler;
 use Swag\Model\Page\TwigHandler;
 use Swag\Service\ResourcesConformer;
 use Swag\Service\SourceTreeMimicker;
@@ -70,6 +71,7 @@ class Generator
             ]);
 
             $pageEngine = new Engine();
+            $pageEngine->addPageHandler(new IterativeTwigHandler($twig, $mirror));
             $pageEngine->addPageHandler(new TwigHandler($twig, $mirror));
             $pageEngine->addPageHandler(new AssetHandler($mirror));
         } catch (InitException $e) {
