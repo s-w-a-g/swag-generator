@@ -1,7 +1,16 @@
 ---
 user:
-    data:        data
-    pages:       pages
+    # The directory (in user root folder) containing the assets Swag will use
+    # if null, the data & pages must be located at the root of the user folder
+    assets: swag
+
+    # The directory Swag will use to build the data variable
+    data: data
+
+    # The directory Swag will browse to process pages
+    pages: pages
+
+    # The destination directory where to put processed pages
     destination: static_website
 
 # file that we don't want to be copied (extension without dot)

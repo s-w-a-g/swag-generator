@@ -46,10 +46,10 @@ class Generator
      */
     public static function main($source, OutputInterface $output)
     {
-        $resourcesLocation = $source;
+        $userDirectory = $source;
 
         try {
-            $resources = ResourcesConformer::init($resourcesLocation, __DIR__.'/../config.yml');
+            $resources = ResourcesConformer::init($userDirectory, __DIR__.'/../config.yml');
 
             $mirror = new SourceTreeMimicker($resources['pages'], $resources['destination']);
 

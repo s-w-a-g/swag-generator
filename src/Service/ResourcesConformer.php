@@ -20,36 +20,48 @@ class ResourcesConformer
     /**
      * build app config
      *
-     * @param  string $resourcesLocation the directory holding the generator and user sources
-     * @param  string $config            Yml config file for the app
+     * @param  string $userDirectory The user directory holding source and processed pages
+     * @param  string $config        Yml config file for the app
      * @throws InitException
      *
      * @return array
      */
-    public static function init($resourcesLocation, $config)
+    public static function init($userDirectory, $config)
     {
-        $resourcesLocation = new \SplFileInfo($resourcesLocation);
+        // Check for user directory
+        $userDirectory = new \SplFileInfo($userDirectory);
 
-        if (!$resourcesLocation->isDir()) {
+        if (!$userDirectory->isDir()) {
             throw new InitException(sprintf(
                 '--source option is not a valid directory: %s',
-                $resourcesLocation
+                $userDirectory
             ));
         }
 
         $config = Yaml::parse(file_get_contents($config));
 
+        // Check assets directory is readable
+        if (empty($config['user']['assets'])) {
+            $assets = $userDirectory;
+        } else {
+            $assets = new \SplFileInfo($userDirectory.'/'.$config['user']['assets']);
+            self::ensureDirIsReadable($assets);
+        }
+
+        // Check assets' subdirectories are readable
         $readableDirectories = [
-            'data'  => $config['user']['data'],
-            'pages' => $config['user']['pages'],
+            'data'  => $assets.DIRECTORY_SEPARATOR.$config['user']['data'],
+            'pages' => $assets.DIRECTORY_SEPARATOR.$config['user']['pages'],
         ];
+
         foreach ($readableDirectories as $key => $subDir) {
-            $dir = new \SplFileInfo($resourcesLocation.'/'.$subDir);
+            $dir = new \SplFileInfo($subDir);
             self::ensureDirIsReadable($dir);
             $resources[$key] = $dir;
         }
 
-        $destination = new \SplFileInfo($resourcesLocation.'/'.$config['user']['destination']);
+        // Check for destination directory
+        $destination = new \SplFileInfo($userDirectory.DIRECTORY_SEPARATOR.$config['user']['destination']);
         self::ensureDirIsWritable($destination);
         $resources['destination'] = $destination;
 
@@ -68,7 +80,7 @@ class ResourcesConformer
         // check if dir is an actual directory
         if (!$dir->isDir()) {
             throw new InitException(sprintf(
-                "'%s' is not a directory in source directory",
+                "[%s] does not exist or is not a directory.",
                 $dir
             ));
         }
@@ -76,7 +88,7 @@ class ResourcesConformer
         // check if dir is readable
         if (!$dir->isReadable()) {
             throw new InitException(sprintf(
-                "Cannot read '%s' in source directory. Check for access rights.",
+                "Cannot read [%s] in source directory. Check for access rights.",
                 $dir
             ));
         }
