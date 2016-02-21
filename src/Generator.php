@@ -41,15 +41,20 @@ class Generator
     /**
      * Main app controller
      *
-     * @param  string          $source the user resources location
+     * @param  string          $source      the user resources location
+     * @param  string          $destination Where to place the processed pages
      * @param  OutputInterface $output
      */
-    public static function main($source, OutputInterface $output)
+    public static function main($source, $destination, OutputInterface $output)
     {
         $userDirectory = $source;
 
         try {
-            $resources = ResourcesConformer::init($userDirectory, __DIR__.'/../config.yml');
+            $resources = ResourcesConformer::init(
+                $userDirectory,
+                $destination,
+                __DIR__.'/../config.yml'
+            );
 
             $mirror = new SourceTreeMimicker($resources['pages'], $resources['destination']);
 

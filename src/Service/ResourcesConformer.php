@@ -21,19 +21,20 @@ class ResourcesConformer
      * build app config
      *
      * @param  string $userDirectory The user directory holding source and processed pages
+     * @param  string $destination   The destination directory for processed pages
      * @param  string $config        Yml config file for the app
      * @throws InitException
      *
      * @return array
      */
-    public static function init($userDirectory, $config)
+    public static function init($userDirectory, $destination, $config)
     {
         // Check for user directory
         $userDirectory = new \SplFileInfo($userDirectory);
 
         if (!$userDirectory->isDir()) {
             throw new InitException(sprintf(
-                '--source option is not a valid directory: %s',
+                'source argument is not a valid directory: %s',
                 $userDirectory
             ));
         }
@@ -61,8 +62,23 @@ class ResourcesConformer
         }
 
         // Check for destination directory
-        $destination = new \SplFileInfo($userDirectory.DIRECTORY_SEPARATOR.$config['user']['destination']);
+        $destination = $destination ? : $config['user']['destination'];
+        $destination = new \SplFileInfo($userDirectory.DIRECTORY_SEPARATOR.$destination);
         self::ensureDirIsWritable($destination);
+
+        // Check for potential collision in directory structure
+        if ($destination->getRealPath() === $userDirectory->getRealPath()) {
+            $collision = $resources['pages']->getRealPath().DIRECTORY_SEPARATOR.$assets->getBasename();
+            $collision = new \SplFileInfo($collision);
+
+            if ($collision->isDir()) {
+                throw new InitException(sprintf(
+                    "[%s] directory would overwrite the assets directory needed by the Swag Generator.",
+                    $collision->getRealPath()
+                ));
+            }
+        }
+
         $resources['destination'] = $destination;
 
         return $resources;
