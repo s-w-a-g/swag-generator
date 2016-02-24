@@ -12,6 +12,7 @@ use Swag\Model\Data\DataFactory;
 use Swag\Model\Page\AssetHandler;
 use Swag\Model\Page\Engine;
 use Swag\Model\Page\IterativeTwigHandler;
+use Swag\Model\Page\SkipHandler;
 use Swag\Model\Page\TwigHandler;
 use Swag\Service\ResourcesConformer;
 use Swag\Service\SourceTreeMimicker;
@@ -60,12 +61,14 @@ class Generator
 
             $loader = new \Twig_Loader_Filesystem($resources['pages']);
             $twig   = new \Twig_Environment($loader, [
-                'cache' => false,
+                'cache'      => false,
+                'autoescape' => false,
             ]);
 
             $pageEngine = new Engine();
             $pageEngine->addPageHandler(new IterativeTwigHandler($twig, $mirror));
             $pageEngine->addPageHandler(new TwigHandler($twig, $mirror));
+            $pageEngine->addPageHandler(new SkipHandler($mirror));
             $pageEngine->addPageHandler(new AssetHandler($mirror));
         } catch (InitException $e) {
             $output->writeln('<error>'.$e->getMessage().'</>');

@@ -37,16 +37,6 @@ class AssetHandler implements PageHandlerInterface
      */
     public function apply(\SplFileInfo $file)
     {
-        // discard hidden files
-        if (strpos($file->getBasename(), '.') === 0) {
-            return false;
-        }
-
-        // Discard Twig files
-        if ($file->getExtension() === 'twig') {
-            return false;
-        }
-
         return true;
     }
 
