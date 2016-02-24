@@ -85,7 +85,7 @@ class TwigHandler implements PageHandlerInterface
     {
         $contents = file_get_contents($file);
 
-        preg_match('/\{# meta(.+)\n#\}/s', $contents, $matches);
+        preg_match('/\{# meta(.+?)\n#\}/s', $contents, $matches);
 
         if (!isset($matches[1])) {
             return null;

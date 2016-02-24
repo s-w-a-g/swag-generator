@@ -25,8 +25,7 @@ class MarkdownHandler extends AbstractDataHandler
         $data     = new Data();
         $start    = 0;
         $contents = file_get_contents($this->node);
-
-        preg_match('/^[-]{3}(.+)(?:\n---)/s', $contents, $matches);
+        preg_match('/^[-]{3}(.+?)(?=\n---\n)/s', $contents, $matches);
         if (isset($matches[1])) {
             $start = strlen($matches[0]);
             $metas = Yaml::parse($matches[1]);
