@@ -63,10 +63,10 @@ class IterativeTwigHandler extends TwigHandler
         foreach ($items as $key => $item) {
             $data[$itemName] = $item;
 
-            $relativePath = $this->mirror->getSrcFileRelativePath($file);
+            $relativePath = $this->fileSystem->getSrcFileRelativePath($file);
             $destination  = dirname($relativePath).'/'.$key.'.html';
-            $destination  = $this->mirror->generateDestinationPathName($destination);
-            $this->mirror->ensureDestinationDirectoryIsWritable($destination);
+            $destination  = $this->fileSystem->generateDestinationPathName($destination);
+            $this->fileSystem->ensureDestinationDirectoryIsWritable($destination);
 
             echo "\nRendering ".$relativePath." for ".$key;
             $content = $this->twig->render($relativePath, $data);

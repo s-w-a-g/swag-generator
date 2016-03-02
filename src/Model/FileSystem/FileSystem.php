@@ -5,13 +5,13 @@
  * @License: view License file if any
  */
 
-namespace Swag\Service;
+namespace Swag\Model\FileSystem;
 
 /**
  * Handle file paths and directory consistency
  * between the source tree and the static website folder
  */
-class SourceTreeMimicker
+class FileSystem
 {
     /**
      * The assets root directory
@@ -64,7 +64,7 @@ class SourceTreeMimicker
     }
 
     /**
-     * Insures destination directory for asset exists. Creates it otherwise.
+     * Ensures destination directory for asset exists. Creates it otherwise.
      *
      * @param string $absolutePath full path of a file
      */

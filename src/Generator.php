@@ -10,13 +10,13 @@ namespace Swag;
 use Swag\Exception\InitException;
 use Swag\Exception\SwagException;
 use Swag\Model\Data\DataFactory;
+use Swag\Model\FileSystem\FileSystem;
 use Swag\Model\Page\AssetHandler;
 use Swag\Model\Page\Engine;
 use Swag\Model\Page\IterativeTwigHandler;
 use Swag\Model\Page\SkipHandler;
 use Swag\Model\Page\TwigHandler;
 use Swag\Service\ResourcesConformer;
-use Swag\Service\SourceTreeMimicker;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -58,7 +58,7 @@ class Generator
                 __DIR__.'/../config.yml'
             );
 
-            $mirror = new SourceTreeMimicker($resources['pages'], $resources['destination']);
+            $fileSystem = new FileSystem($resources['pages'], $resources['destination']);
 
             $loader = new \Twig_Loader_Filesystem($resources['pages']);
             $twig   = new \Twig_Environment($loader, [
@@ -67,10 +67,10 @@ class Generator
             ]);
 
             $pageEngine = new Engine();
-            $pageEngine->addPageHandler(new IterativeTwigHandler($twig, $mirror));
-            $pageEngine->addPageHandler(new TwigHandler($twig, $mirror));
-            $pageEngine->addPageHandler(new SkipHandler($mirror));
-            $pageEngine->addPageHandler(new AssetHandler($mirror));
+            $pageEngine->addPageHandler(new IterativeTwigHandler($twig, $fileSystem));
+            $pageEngine->addPageHandler(new TwigHandler($twig, $fileSystem));
+            $pageEngine->addPageHandler(new SkipHandler($fileSystem));
+            $pageEngine->addPageHandler(new AssetHandler($fileSystem));
         } catch (InitException $e) {
             $output->writeln('<error>'.$e->getMessage().'</>');
             die(1);

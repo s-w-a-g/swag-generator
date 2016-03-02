@@ -8,7 +8,7 @@
 namespace Swag\Model\Page;
 
 use Swag\Model\Page\PageHandlerInterface;
-use Swag\Service\SourceTreeMimicker;
+use Swag\Model\FileSystem\FileSystem;
 
 /**
  * Renders twig templates to pages
@@ -18,18 +18,18 @@ class SkipHandler implements PageHandlerInterface
     /**
      * Service handling consistency between source and destination directories
      *
-     * @var SourceTreeMimicker
+     * @var FileSystem
      */
-    private $mirror;
+    private $fileSystem;
 
     /**
      * __construct
      *
-     * @param SourceTreeMimicker $mirror
+     * @param FileSystem $fileSystem
      */
-    public function __construct(SourceTreeMimicker $mirror)
+    public function __construct(FileSystem $fileSystem)
     {
-        $this->mirror = $mirror;
+        $this->fileSystem = $fileSystem;
     }
 
     /**
@@ -55,7 +55,7 @@ class SkipHandler implements PageHandlerInterface
      */
     public function processFile(\SplFileInfo $file, $data = null)
     {
-        $relativePath = $this->mirror->getSrcFileRelativePath($file);
+        $relativePath = $this->fileSystem->getSrcFileRelativePath($file);
         echo "\nSkipping  ".$relativePath;
     }
 }

@@ -8,7 +8,7 @@
 namespace Swag\Model\Page;
 
 use Swag\Model\Page\PageHandlerInterface;
-use Swag\Service\SourceTreeMimicker;
+use Swag\Model\FileSystem\FileSystem;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -26,20 +26,20 @@ class TwigHandler implements PageHandlerInterface
     /**
      * Service handling consistency between source and website directories
      *
-     * @var SourceTreeMimicker
+     * @var FileSystem
      */
-    protected $mirror;
+    protected $fileSystem;
 
     /**
      * Construct
      *
-     * @param \Twig_Environment  $twig
-     * @param SourceTreeMimicker $mirror
+     * @param \Twig_Environment $twig
+     * @param FileSystem        $fileSystem
      */
-    public function __construct(\Twig_Environment $twig, SourceTreeMimicker $mirror)
+    public function __construct(\Twig_Environment $twig, FileSystem $fileSystem)
     {
-        $this->twig   = $twig;
-        $this->mirror = $mirror;
+        $this->twig       = $twig;
+        $this->fileSystem = $fileSystem;
     }
 
     /**
@@ -65,9 +65,9 @@ class TwigHandler implements PageHandlerInterface
     public function processFile(\SplFileInfo $file, $data = null)
     {
 
-        $relativePath = $this->mirror->getSrcFileRelativePath($file);
-        $destination  = $this->mirror->generateDestinationPathName($this->trimTwigExtension($relativePath));
-        $this->mirror->ensureDestinationDirectoryIsWritable($destination);
+        $relativePath = $this->fileSystem->getSrcFileRelativePath($file);
+        $destination  = $this->fileSystem->generateDestinationPathName($this->trimTwigExtension($relativePath));
+        $this->fileSystem->ensureDestinationDirectoryIsWritable($destination);
 
         echo "\nRendering ".$relativePath;
         $content = $this->twig->render($relativePath, $data);

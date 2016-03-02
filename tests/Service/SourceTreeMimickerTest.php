@@ -5,9 +5,9 @@
  * @License: view License file if any
  */
 
-use Swag\Service\SourceTreeMimicker;
+use Swag\Model\FileSystem\FileSystem;
 
-class SourceTreeMimickerTest extends PHPUnit_Framework_TestCase
+class FileSystemTest extends PHPUnit_Framework_TestCase
 {
     const USER_DIR        = 'tmp-user-directory';
     const SWAG_DIR        = 'swag';
@@ -52,13 +52,13 @@ class SourceTreeMimickerTest extends PHPUnit_Framework_TestCase
     public function testPathGeneration()
     {
         $relativePath = 'subdir/file.txt';
-        $file     = new \SplFileInfo($this->swagDir.DIRECTORY_SEPARATOR.$relativePath);
-        $mimicker = new SourceTreeMimicker($this->swagDir, $this->destination);
+        $file = new \SplFileInfo($this->swagDir.DIRECTORY_SEPARATOR.$relativePath);
+        $fileSystem = new FileSystem($this->swagDir, $this->destination);
 
-        $destinationPath = $mimicker->getSrcFileRelativePath($file);
+        $destinationPath = $fileSystem->getSrcFileRelativePath($file);
         $this->assertTrue($destinationPath === $relativePath);
 
-        $absolutePath = $mimicker->generateDestinationPathName($destinationPath);
+        $absolutePath = $fileSystem->generateDestinationPathName($destinationPath);
         $testPath     = $this->destination.DIRECTORY_SEPARATOR.$relativePath;
         $this->assertTrue($absolutePath === $testPath);
     }
