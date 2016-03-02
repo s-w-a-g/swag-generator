@@ -8,6 +8,7 @@
 namespace Swag;
 
 use Swag\Exception\InitException;
+use Swag\Exception\SwagException;
 use Swag\Model\Data\DataFactory;
 use Swag\Model\Page\AssetHandler;
 use Swag\Model\Page\Engine;
@@ -76,7 +77,13 @@ class Generator
         }
 
         $app = new Generator($pageEngine);
-        $app->generateStaticWebsite($resources);
+
+        try {
+            $app->generateStaticWebsite($resources);
+        } catch (SwagException $e) {
+            $output->writeln('<error> '.$e->getMessage().' </>');
+            die(2);
+        }
     }
 
     /**

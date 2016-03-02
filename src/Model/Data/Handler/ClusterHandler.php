@@ -9,6 +9,7 @@ namespace Swag\Model\Data\Handler;
 
 use Swag\Model\Data\DataFactory;
 use Swag\Model\Data\Exception\InvalidDataFileException;
+use Swag\Model\Data\Exception\InvalidStructureException;
 
 /**
  * Build config for a file or directory
@@ -37,7 +38,11 @@ class ClusterHandler extends AbstractDataHandler
             }
 
             if ($node->isValid()) {
-                $value[$node->getKey()] = $node->getValue();
+                $key = $node->getKey();
+                if (isset($value[$key])) {
+                    throw new InvalidStructureException($key);
+                }
+                $value[$key] = $node->getValue();
             }
         }
 

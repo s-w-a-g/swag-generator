@@ -7,10 +7,12 @@
 
 namespace Swag\Model\Data\Exception;
 
+use Swag\Exception\SwagException;
+
 /**
  * Invalid file for building a data node exception
  */
-class InvalidDataFileException extends \Exception
+class InvalidDataFileException extends SwagException
 {
     /**
      * file that cannot be turned in a user data node
