@@ -7,10 +7,12 @@
 
 namespace Swag\Model\Data\Exception;
 
+use Swag\Exception\SwagException;
+
 /**
  * Exception thrown went attempting to get invalid data property
  */
-class InvalidPropertyException extends \Exception
+class InvalidPropertyException extends SwagException
 {
     /**
      * file that cannot be turned in a user data node
