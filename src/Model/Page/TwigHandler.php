@@ -67,7 +67,7 @@ class TwigHandler implements PageHandlerInterface
 
         $relativePath = $this->fileSystem->getSrcFileRelativePath($file);
         $destination  = $this->fileSystem->generateDestinationPathName($this->trimTwigExtension($relativePath));
-        $this->fileSystem->ensureDestinationDirectoryIsWritable($destination);
+        $this->fileSystem->ensureDestinationDirectoryIsWritable($relativePath);
 
         echo "\nRendering ".$relativePath;
         $content = $this->twig->render($relativePath, $data);

@@ -7,6 +7,8 @@
 
 namespace Swag\Model\FileSystem;
 
+use Swag\Model\FileSystem\Exception\MakeDirException;
+
 /**
  * Handle file paths and directory consistency
  * between the source tree and the static website folder
@@ -54,29 +56,48 @@ class FileSystem
     /**
      * Generate destination pathname based on website root directory
      *
-     * @param  string $basename of source file
+     * @param  string $relativePath of source file
      *
      * @return string the absolute full path in website root directory for the file
      */
-    public function generateDestinationPathName($basename)
+    public function generateDestinationPathName($relativePath)
     {
-        return $this->siteRoot.'/'.$basename;
+        return $this->siteRoot.'/'.$relativePath;
     }
 
     /**
      * Ensures destination directory for asset exists. Creates it otherwise.
      *
-     * @param string $absolutePath full path of a file
+     * @param string $relativePath full path of a file
      */
-    public function ensureDestinationDirectoryIsWritable($absolutePath)
+    public function ensureDestinationDirectoryIsWritable($relativePath)
     {
-        $destDir = dirname($absolutePath);
+        $subDirs = explode(DIRECTORY_SEPARATOR, dirname($relativePath));
+        $path    = $this->siteRoot;
 
-        if (!is_dir($destDir) && !mkdir($destDir, 0700, true)) {
-            throw new \Exception(sprintf(
-                "Unable to create the directory: %s",
-                $destDir
-            ), 1);
+        foreach ($subDirs as $subDir) {
+            $path .= DIRECTORY_SEPARATOR.$subDir;
+            if (!is_dir($path)) {
+                self::makeDir($path);
+            }
         }
+    }
+
+    /**
+     * Create a directory with Warning handling
+     *
+     * @param  \SplFileInfo|string $dir
+     *
+     * @throws MakeDirException
+     */
+    public static function makeDir($dir)
+    {
+        set_error_handler(function () use ($dir) {
+            throw new MakeDirException($dir);
+        });
+
+        mkdir($dir, 0700, true);
+
+        restore_error_handler();
     }
 }

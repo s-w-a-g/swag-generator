@@ -48,7 +48,7 @@ class AssetHandler implements PageHandlerInterface
         $relativePath = $this->fileSystem->getSrcFileRelativePath($file);
         $destination  = $this->fileSystem->generateDestinationPathName($relativePath);
 
-        $this->fileSystem->ensureDestinationDirectoryIsWritable($destination);
+        $this->fileSystem->ensureDestinationDirectoryIsWritable($relativePath);
 
         echo "\nCopying   ".$relativePath;
         copy($file, $destination);
