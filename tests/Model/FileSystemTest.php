@@ -46,7 +46,7 @@ class FileSystemTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        exec('rm -rf '.$this->userDir);
+        // exec('rm -rf '.$this->userDir);
     }
 
     public function testPathGeneration()
@@ -63,8 +63,24 @@ class FileSystemTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($absolutePath === $testPath);
     }
 
-    public function testDestinationIsWritable()
+    public function testDirectoryIsCreated()
     {
-        # code...
+        $relativePath = 'subdir/file.txt';
+        $fileSystem = new FileSystem($this->swagDir, $this->destination);
+
+        $fileSystem->ensureDestinationDirectoryIsWritable($relativePath);
+        $this->assertFileExists($this->destination.DIRECTORY_SEPARATOR.'subdir');
+    }
+
+    /**
+     * @expectedException Swag\Model\FileSystem\Exception\MakeDirException
+     */
+    public function testDirectoryIsNotCreated()
+    {
+        $relativePath = 'subdir/file.txt';
+        $fileSystem = new FileSystem($this->swagDir, $this->destination);
+        exec('chmod u-w '.$this->destination);
+
+        $fileSystem->ensureDestinationDirectoryIsWritable($relativePath);
     }
 }

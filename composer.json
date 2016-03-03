@@ -6,6 +6,6 @@
         "m6web/symfony2-coding-standard": "^3.1",
         "mnapoli/silly": "^1.2",
         "michelf/php-markdown": "^1.6",
-        "phpunit/phpunit": "~5.0"
+        "phpunit/phpunit": "~4.0"
     }
 }
