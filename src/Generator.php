@@ -10,11 +10,7 @@ namespace Swag;
 use Swag\Exception\InitException;
 use Swag\Exception\SwagException;
 use Swag\Model\Data\DataFactory;
-use Swag\Model\Page\Handler\AssetHandler;
 use Swag\Model\Page\Engine;
-use Swag\Model\Page\Handler\IterativeTwigHandler;
-use Swag\Model\Page\Handler\SkipHandler;
-use Swag\Model\Page\Handler\TwigHandler;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -65,14 +61,7 @@ class Generator
             $container->setParameter('pages_directory', $resources['pages']);
             $container->setParameter('destination_directory', $resources['destination']);
 
-            $fileSystem = $container->get('swag.file_system');
-            $twig       = $container->get('swag.template');
-
-            $pageEngine = new Engine();
-            $pageEngine->addPageHandler(new IterativeTwigHandler($twig, $fileSystem));
-            $pageEngine->addPageHandler(new TwigHandler($twig, $fileSystem));
-            $pageEngine->addPageHandler(new SkipHandler($fileSystem));
-            $pageEngine->addPageHandler(new AssetHandler($fileSystem));
+            $pageEngine = $container->get('swag.page_engine');
         } catch (InitException $e) {
             $output->writeln('<error>'.$e->getMessage().'</>');
             die(1);
@@ -99,7 +88,7 @@ class Generator
         $data = $this->gatherUserData($resources['data']);
 
         // Process user layout and assets
-        $this->engine->processPages($resources['pages'], $data);
+        $this->engine->setData($data)->processPages();
     }
 
     /**

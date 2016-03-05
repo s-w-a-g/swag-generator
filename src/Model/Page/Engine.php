@@ -16,11 +16,35 @@ use Swag\Model\Page\Handler\PageHandlerInterface;
 class Engine
 {
     /**
+     * Directory holding pages to proccess
+     *
+     * @var \SplFileInfo
+     */
+    private $pagesLocation;
+
+    /**
+     * data generated from user's data directory
+     *
+     * @var array
+     */
+    private $data = [];
+
+    /**
      * list of pageHandler
      *
      * @var PageHandlerInterface[]
      */
     private $pageHandlers = [];
+
+    /**
+     * Construct
+     *
+     * @param \SplFileInfo $pagesLocation
+     */
+    public function __construct(\SplFileInfo $pagesLocation)
+    {
+        $this->pagesLocation = $pagesLocation;
+    }
 
     /**
      * Add a PageHandler to the list
@@ -34,14 +58,11 @@ class Engine
 
     /**
      * Browse source directory to process user files
-     *
-     * @param  \SplFileInfo $pagesLocation Location of user pages to process
-     * @param  array        $data          User's data prepped for injecting in templates
      */
-    public function processPages(\SplFileInfo $pagesLocation, $data)
+    public function processPages()
     {
         $sourceTree = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($pagesLocation, \FilesystemIterator::SKIP_DOTS)
+            new \RecursiveDirectoryIterator($this->pagesLocation, \FilesystemIterator::SKIP_DOTS)
         );
 
         foreach ($sourceTree as $file) {
@@ -52,8 +73,22 @@ class Engine
                 continue;
             }
 
-            $handler->processFile($file, $data);
+            $handler->processFile($file, $this->data);
         }
+    }
+
+    /**
+     * set data generated from user's data directory
+     *
+     * @param array $data
+     *
+     * @return self
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
     }
 
     /**
