@@ -5,7 +5,7 @@
  * @License: view License file if any
  */
 
-namespace Swag\Model\Page;
+namespace Swag\Model\Page\Handler;
 
 use Swag\Model\Data\Exception\InvalidPropertyException;
 use Swag\Model\Page\Exception\InvalidTwigMetaException;

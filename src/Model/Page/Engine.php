@@ -8,7 +8,7 @@
 namespace Swag\Model\Page;
 
 use Swag\Model\Page\Exception\InvalidPageException;
-use Swag\Model\Page\PageHandlerInterface;
+use Swag\Model\Page\Handler\PageHandlerInterface;
 
 /**
  * Renders twig templates to pages

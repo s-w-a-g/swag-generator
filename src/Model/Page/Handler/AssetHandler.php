@@ -5,9 +5,9 @@
  * @License: view License file if any
  */
 
-namespace Swag\Model\Page;
+namespace Swag\Model\Page\Handler;
 
-use Swag\Model\Page\PageHandlerInterface;
+use Swag\Model\Page\Handler\PageHandlerInterface;
 use Swag\Model\FileSystem\FileSystem;
 
 /**

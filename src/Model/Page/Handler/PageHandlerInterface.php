@@ -5,7 +5,7 @@
  * @License: view License file if any
  */
 
-namespace Swag\Model\Page;
+namespace Swag\Model\Page\Handler;
 
 /**
  * Renders twig templates to pages
