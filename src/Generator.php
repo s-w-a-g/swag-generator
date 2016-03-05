@@ -10,14 +10,15 @@ namespace Swag;
 use Swag\Exception\InitException;
 use Swag\Exception\SwagException;
 use Swag\Model\Data\DataFactory;
-use Swag\Model\FileSystem\FileSystem;
 use Swag\Model\Page\AssetHandler;
 use Swag\Model\Page\Engine;
 use Swag\Model\Page\IterativeTwigHandler;
 use Swag\Model\Page\SkipHandler;
 use Swag\Model\Page\TwigHandler;
-use Swag\Service\ResourcesConformer;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * App main class
@@ -52,19 +53,20 @@ class Generator
         $userDirectory = $source;
 
         try {
-            $resources = ResourcesConformer::init(
-                $userDirectory,
-                $destination,
-                __DIR__.'/../config.yml'
-            );
+            $container = new ContainerBuilder();
+            $loader    = new YamlFileLoader($container, new FileLocator(__DIR__));
+            $loader->load(__DIR__.'/../config.yml');
 
-            $fileSystem = new FileSystem($resources['pages'], $resources['destination']);
+            $resources = $container
+                ->get('swag.resources_conformer')
+                ->ensureResourcesAreWorkable($userDirectory, $destination);
 
-            $loader = new \Twig_Loader_Filesystem($resources['pages']);
-            $twig   = new \Twig_Environment($loader, [
-                'cache'      => false,
-                'autoescape' => false,
-            ]);
+            $container->setParameter('data_directory', $resources['data']);
+            $container->setParameter('pages_directory', $resources['pages']);
+            $container->setParameter('destination_directory', $resources['destination']);
+
+            $fileSystem = $container->get('swag.file_system');
+            $twig       = $container->get('swag.template');
 
             $pageEngine = new Engine();
             $pageEngine->addPageHandler(new IterativeTwigHandler($twig, $fileSystem));
@@ -91,7 +93,7 @@ class Generator
      *
      * @param array $resources The config file defining user resources locations
      */
-    public function generateStaticWebsite($resources)
+    private function generateStaticWebsite($resources)
     {
         // Fetch user data
         $data = $this->gatherUserData($resources['data']);

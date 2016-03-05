@@ -18,16 +18,31 @@ use Symfony\Component\Yaml\Yaml;
 class ResourcesConformer
 {
     /**
+     * app config (located at the app root)
+     * @var array
+     */
+    private $config;
+
+    /**
+     * Construct
+     *
+     * @param array $config
+     */
+    public function __construct($config)
+    {
+        $this->config = $config;
+    }
+
+    /**
      * build app config
      *
      * @param  string $userDirectory The user directory holding source and processed pages
      * @param  string $destination   The destination directory for processed pages
-     * @param  string $config        Yml config file for the app
      * @throws InitException
      *
      * @return array
      */
-    public static function init($userDirectory, $destination, $config)
+    public function ensureResourcesAreWorkable($userDirectory, $destination)
     {
         // Check for user directory
         $userDirectory = new \SplFileInfo($userDirectory);
@@ -39,20 +54,18 @@ class ResourcesConformer
             ));
         }
 
-        $config = Yaml::parse(file_get_contents($config));
-
         // Check assets directory is readable
-        if (empty($config['user']['assets'])) {
+        if (empty($this->config['assets'])) {
             $assets = $userDirectory;
         } else {
-            $assets = new \SplFileInfo($userDirectory.'/'.$config['user']['assets']);
+            $assets = new \SplFileInfo($userDirectory.'/'.$this->config['assets']);
             self::ensureDirIsReadable($assets);
         }
 
         // Check assets' subdirectories are readable
         $readableDirectories = [
-            'data'  => $assets.DIRECTORY_SEPARATOR.$config['user']['data'],
-            'pages' => $assets.DIRECTORY_SEPARATOR.$config['user']['pages'],
+            'data'  => $assets.DIRECTORY_SEPARATOR.$this->config['data'],
+            'pages' => $assets.DIRECTORY_SEPARATOR.$this->config['pages'],
         ];
 
         foreach ($readableDirectories as $key => $subDir) {
@@ -62,7 +75,7 @@ class ResourcesConformer
         }
 
         // Check for destination directory
-        $destination = $destination ? : $config['user']['destination'];
+        $destination = $destination ? : $this->config['destination'];
         $destination = new \SplFileInfo($userDirectory.DIRECTORY_SEPARATOR.$destination);
         self::ensureDirIsWritable($destination);
 

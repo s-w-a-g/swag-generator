@@ -12,7 +12,7 @@ $app = new Silly\Application();
 
 $app
 ->command('generate [source] [--destination=]', ['Swag\\Generator', 'main'])
-->descriptions('Generate your Static Website with SWaG!', [
+->descriptions('Generate your Static Website with Sw:ag!', [
     'source'        => 'Absolute path to the source directory.',
     '--destination' => 'Directory in which processed files must be placed. The path is relative to the source directory. Default: static_website'
 ]);

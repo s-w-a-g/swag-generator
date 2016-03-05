@@ -1,19 +1,37 @@
 ---
-user:
-    # The directory (in user root folder) containing the assets Swag will use
-    # if null, the data & pages must be located at the root of the user folder
-    assets: swag
+parameters:
+    user:
+        # The directory (in user root folder) containing the assets Swag will use
+        # if null, the data & pages must be located at the root of the user folder
+        assets: swag
 
-    # The directory Swag will use to build the data variable
-    data: data
+        # The directory Swag will use to build the data variable
+        data: data
 
-    # The directory Swag will browse to process pages
-    pages: pages
+        # The directory Swag will browse to process pages
+        pages: pages
 
-    # The destination directory where to put processed pages
-    destination: static_website
+        # The destination directory where to put processed pages
+        destination: static_website
 
-# file that we don't want to be copied (extension without dot)
-ignored_files:
-    - gitkeep
-    - DS_Store
+    generator:
+        twig:
+            cache: false
+            autoescape: false
+
+services:
+    swag.resources_conformer:
+        class: Swag\Service\ResourcesConformer
+        arguments: ['%user%']
+
+    swag.file_system:
+        class: Swag\Model\FileSystem\FileSystem
+        arguments: ['%pages_directory%', '%destination_directory%']
+
+    swag.template_loader:
+        class: \Twig_Loader_Filesystem
+        arguments: ['%pages_directory%']
+
+    swag.template:
+        class: \Twig_Environment
+        arguments: ['@swag.template_loader', "@=parameter('generator')['twig']"]
