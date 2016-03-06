@@ -12,13 +12,21 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * User Data as Yaml file
  */
-class YamlHandler extends AbstractDataHandler
+class YamlHandler implements DataHandlerInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getValue()
+    public function apply(\SplFileInfo $file)
     {
-        return Yaml::parse(file_get_contents($this->node));
+        return in_array($file->getExtension(), ['yml', 'yaml']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValue(\SplFileInfo $file)
+    {
+        return Yaml::parse(file_get_contents($file));
     }
 }

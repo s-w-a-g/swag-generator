@@ -36,28 +36,48 @@ services:
         class: \Twig_Environment
         arguments: ['@swag.template_loader', "@=parameter('generator')['twig']"]
 
+    # Pages generation
     swag.page_engine:
         class: Swag\Model\Page\Engine
         arguments: ['%pages_directory%']
         calls:
-            - [addPageHandler, ['@swag.iterative_twig_handler']]
-            - [addPageHandler, ['@swag.twig_handler']]
-            - [addPageHandler, ['@swag.skip_handler']]
-            - [addPageHandler, ['@swag.asset_handler']]
+            - [addPageHandler, ['@swag.page_handler.iterative_twig']]
+            - [addPageHandler, ['@swag.page_handler.twig']]
+            - [addPageHandler, ['@swag.page_handler.skip']]
+            - [addPageHandler, ['@swag.page_handler.asset']]
 
-    swag.iterative_twig_handler:
+    swag.page_handler.iterative_twig:
         class: Swag\Model\Page\Handler\IterativeTwigHandler
         arguments: ['@swag.template', '@swag.file_system']
 
-    swag.twig_handler:
+    swag.page_handler.twig:
         class: Swag\Model\Page\Handler\TwigHandler
         arguments: ['@swag.template', '@swag.file_system']
 
-    swag.skip_handler:
+    swag.page_handler.skip:
         class: Swag\Model\Page\Handler\SkipHandler
         arguments: ['@swag.file_system']
 
-    swag.asset_handler:
+    swag.page_handler.asset:
         class: Swag\Model\Page\Handler\AssetHandler
         arguments: ['@swag.file_system']
+
+    # data building
+    swag.data_builder:
+        class: Swag\Model\Data\DataBuilder
+        arguments: ['%data_directory%']
+        calls:
+            - [addDataHandler, ['@swag.data_handler.directory']]
+            - [addDataHandler, ['@swag.data_handler.yaml']]
+            - [addDataHandler, ['@swag.data_handler.markdown']]
+
+    swag.data_handler.directory:
+        class: Swag\Model\Data\Handler\DirectoryHandler
+
+    swag.data_handler.yaml:
+        class: Swag\Model\Data\Handler\YamlHandler
+
+    swag.data_handler.markdown:
+        class: Swag\Model\Data\Handler\MarkdownHandler
+
 

@@ -14,17 +14,24 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * User Data as Yaml file
  */
-class MarkdownHandler extends AbstractDataHandler
+class MarkdownHandler implements DataHandlerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function apply(\SplFileInfo $file)
+    {
+        return in_array($file->getExtension(), ['md', 'mdown']);
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function getValue()
+    public function getValue(\SplFileInfo $file)
     {
         $data     = new Data();
         $start    = 0;
-        $contents = file_get_contents($this->node);
+        $contents = file_get_contents($file);
         preg_match('/^[-]{3}(.+?)(?:\n---\n)/s', $contents, $matches);
         if (isset($matches[1])) {
             $start = strlen($matches[0]);

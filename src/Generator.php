@@ -22,22 +22,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 class Generator
 {
     /**
-     * @var Engine
-     */
-    private $engine;
-
-    /**
-     * Construct
-     *
-     * @param Engine $engine
-     */
-    public function __construct(
-        Engine $engine
-    ) {
-        $this->engine = $engine;
-    }
-
-    /**
      * Main app controller
      *
      * @param  string          $source      the user resources location
@@ -61,47 +45,20 @@ class Generator
             $container->setParameter('pages_directory', $resources['pages']);
             $container->setParameter('destination_directory', $resources['destination']);
 
-            $pageEngine = $container->get('swag.page_engine');
+            $pageEngine  = $container->get('swag.page_engine');
+            $dataBuilder = $container->get('swag.data_builder');
         } catch (InitException $e) {
             $output->writeln('<error>'.$e->getMessage().'</>');
             die(1);
         }
 
-        $app = new Generator($pageEngine);
 
         try {
-            $app->generateStaticWebsite($resources);
+            $data = $dataBuilder->processData();
+            $pageEngine->setData($data)->processPages();
         } catch (SwagException $e) {
             $output->writeln('<error> '.$e->getMessage().' </>');
             die(2);
         }
-    }
-
-    /**
-     * Main method running the whole generation
-     *
-     * @param array $resources The config file defining user resources locations
-     */
-    private function generateStaticWebsite($resources)
-    {
-        // Fetch user data
-        $data = $this->gatherUserData($resources['data']);
-
-        // Process user layout and assets
-        $this->engine->setData($data)->processPages();
-    }
-
-    /**
-     * Browse data directory to gather data in an array for the template engine
-     *
-     * @params \SplFileInfo $dataLocation
-     *
-     * @return array
-     */
-    private function gatherUserData($dataLocation)
-    {
-        $data = DataFactory::create($dataLocation);
-
-        return $data->getValue();
     }
 }
