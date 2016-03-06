@@ -46,7 +46,7 @@ class FileSystemTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        // exec('rm -rf '.$this->userDir);
+        exec('rm -rf '.$this->userDir);
     }
 
     public function testPathGeneration()
