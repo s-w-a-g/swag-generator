@@ -21,7 +21,7 @@ class FileSystemTest extends PHPUnit_Framework_TestCase
         // vfsStream misses the \SplFileInfo::getRealPath() feature
 
         // Container directory
-        $userDir = __DIR__.'/../'.self::USER_DIR;
+        $userDir = __DIR__.'/../../'.self::USER_DIR;
         exec('rm -rf '.$userDir);
         mkdir($userDir);
         $this->userDir = new \SplFileInfo(realpath($userDir));
