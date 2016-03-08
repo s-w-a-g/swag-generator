@@ -61,18 +61,6 @@ class DirectoryHandler implements DataHandlerInterface
     }
 
     /**
-     * return the key generated upon name of the file/directory
-     *
-     * @param \SplFileInfo $file
-     *
-     * @return string
-     */
-    public function getKey(\SplFileInfo $file)
-    {
-        return $file->getBasename('.'.$file->getExtension());
-    }
-
-    /**
      * Set owning data builder
      *
      * @param DataBuilder $dataBuilder
@@ -82,5 +70,17 @@ class DirectoryHandler implements DataHandlerInterface
     public function setDataBuilder(DataBuilder $dataBuilder)
     {
         $this->dataBuilder = $dataBuilder;
+    }
+
+    /**
+     * return the key generated upon name of the file/directory
+     *
+     * @param \SplFileInfo $file
+     *
+     * @return string
+     */
+    private function getKey(\SplFileInfo $file)
+    {
+        return $file->getBasename('.'.$file->getExtension());
     }
 }

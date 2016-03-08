@@ -8,9 +8,12 @@ namespace Swag\Test\Model\Data\Handler;
 
 use Swag\Model\Data\Data;
 use Swag\Model\Data\Handler\MarkdownHandler;
+use Swag\Test\TestCaseTrait;
 
 class MarkdownHandlerTest extends \PHPUnit_Framework_TestCase
 {
+    use TestCaseTrait;
+
     public function testApply()
     {
         $handler = new MarkdownHandler();
@@ -27,9 +30,9 @@ class MarkdownHandlerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testSetContent()
+    public function testGetValue()
     {
-        $md = __DIR__.'/../../../fixtures/Data/swag.markdown';
+        $md = $this->getFixturesDir().'data/swag.markdown';
         $file = new \SplFileInfo($md);
 
         $handler = new MarkdownHandler();

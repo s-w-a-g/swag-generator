@@ -7,9 +7,12 @@
 namespace Swag\Test\Model\Data\Handler;
 
 use Swag\Model\Data\Handler\YamlHandler;
+use Swag\Test\TestCaseTrait;
 
 class YamlHandlerTest extends \PHPUnit_Framework_TestCase
 {
+    use TestCaseTrait;
+
     public function testApply()
     {
         $handler = new YamlHandler();
@@ -26,9 +29,9 @@ class YamlHandlerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testSetContent()
+    public function testGetValue()
     {
-        $yml = __DIR__.'/../../../fixtures/Data/swag.yml';
+        $yml = $this->getFixturesDir().'data/swag.yml';
         $file = new \SplFileInfo($yml);
 
         $handler = new YamlHandler();
