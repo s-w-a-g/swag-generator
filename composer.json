@@ -4,6 +4,9 @@
             "Swag\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": { "Swag\\Test\\": "tests/" }
+    },
     "require": {
         "twig/twig": "~1.0",
         "symfony/yaml": "^3.0",
