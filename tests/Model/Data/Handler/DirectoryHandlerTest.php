@@ -28,17 +28,13 @@ class DirectoryHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetValue()
     {
-        $dir = new \SplFileInfo($this->getFixturesDir().'data/test-dir');
+        $dir = $this->getFixturesDir().'data/test-dir';
+        $dataBuilder = $this->getDataBuilder($dir);
 
         $dirHandler = new DirectoryHandler();
-
-        $ymlHandler = new YamlHandler();
-
-        $dataBuilder = new DataBuilder(new \SplFileInfo($this->getFixturesDir().'data'));
         $dataBuilder->addDataHandler($dirHandler);
-        $dataBuilder->addDataHandler($ymlHandler);
 
-        $data = $dirHandler->getValue($dir);
+        $data = $dirHandler->getValue(new \SplFileInfo($dir));
 
         $expectedValue = [
             'swag' => [
@@ -48,5 +44,19 @@ class DirectoryHandlerTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->assertEquals($expectedValue, $data);
+    }
+
+    /**
+     * @expectedException Swag\Model\Data\Exception\InvalidStructureException
+     */
+    public function testDuplicateKeys($value='')
+    {
+        $dir = $this->getFixturesDir().'data';
+        $dataBuilder = $this->getDataBuilder($dir);
+
+        $dirHandler = new DirectoryHandler();
+        $dataBuilder->addDataHandler($dirHandler);
+
+        $data = $dirHandler->getValue(new \SplFileInfo($dir));
     }
 }
