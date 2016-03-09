@@ -12,7 +12,7 @@ use Swag\Model\Data\Data;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * User Data as Yaml file
+ * Generate Data from a User's Markdown file
  */
 class MarkdownHandler implements DataHandlerInterface
 {

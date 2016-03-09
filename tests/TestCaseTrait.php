@@ -11,6 +11,8 @@ use Swag\Model\Data\DataBuilder;
 use Swag\Model\Data\Handler\DirectoryHandler;
 use Swag\Model\Data\Handler\MarkdownHandler;
 use Swag\Model\Data\Handler\YamlHandler;
+use Swag\Service\Notifier;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 trait TestCaseTrait
 {
@@ -26,18 +28,17 @@ trait TestCaseTrait
      *
      * @return \Swag\Model\Data\DataBuilder
      */
-    public function getDataBuilder($dataDirectory)
+    public function getDataBuilder($dataDirectory = null)
     {
-        $dir = new \SplFileInfo($dataDirectory);
+        $dir = new \SplFileInfo($dataDirectory ? : $this->getFixturesDir().'data');
+        $output   = new ConsoleOutput();
+        $notifier = new Notifier($output);
 
-        $dirHandler = new DirectoryHandler();
-        $ymlHandler = new YamlHandler();
-        $mdHandler  = new MarkdownHandler();
+        $dataBuilder = new DataBuilder($dir, $notifier);
 
-        $dataBuilder = new DataBuilder(new \SplFileInfo($this->getFixturesDir().'data'));
-        $dataBuilder->addDataHandler($dirHandler);
-        $dataBuilder->addDataHandler($ymlHandler);
-        $dataBuilder->addDataHandler($mdHandler);
+        $dataBuilder->addDataHandler(new DirectoryHandler());
+        $dataBuilder->addDataHandler(new YamlHandler());
+        $dataBuilder->addDataHandler(new MarkdownHandler());
 
         return $dataBuilder;
     }

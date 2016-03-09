@@ -42,10 +42,10 @@ class DirectoryHandler implements DataHandlerInterface
             try {
                 $handler = $this->dataBuilder->getHandlerForFile($file);
             } catch (InvalidDataFileException $e) {
-                printf(
+                $this->dataBuilder->writeLine(sprintf(
                     "Skipping invalid file: %s\n",
                     $e->getInvalidDataFile()
-                );
+                ));
 
                 continue;
             }

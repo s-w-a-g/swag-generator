@@ -36,6 +36,10 @@ services:
         class: \Twig_Environment
         arguments: ['@swag.template_loader', "@=parameter('generator')['twig']"]
 
+    swag.notifier:
+        class: Swag\Service\notifier
+        arguments: ['%console_output%']
+
     # Pages generation
     swag.page_engine:
         class: Swag\Model\Page\Engine
@@ -65,7 +69,7 @@ services:
     # data building
     swag.data_builder:
         class: Swag\Model\Data\DataBuilder
-        arguments: ['%data_directory%']
+        arguments: ['%data_directory%', '@swag.notifier']
         calls:
             - [addDataHandler, ['@swag.data_handler.directory']]
             - [addDataHandler, ['@swag.data_handler.yaml']]

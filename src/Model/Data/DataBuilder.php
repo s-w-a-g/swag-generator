@@ -9,6 +9,7 @@ namespace Swag\Model\Data;
 
 use Swag\Model\Data\Exception\InvalidDataFileException;
 use Swag\Model\Data\Handler\DataHandlerInterface;
+use Swag\Service\Notifier;
 
 /**
  * Build data upon user's data files
@@ -30,13 +31,22 @@ class DataBuilder
     private $dataHandlers = [];
 
     /**
+     * Console output handler
+     *
+     * @var Notifier
+     */
+    private $notifier;
+
+    /**
      * Construct
      *
      * @param \SplFileInfo $dataLocation
+     * @param Notifier     $notifier
      */
-    public function __construct(\SplFileInfo $dataLocation)
+    public function __construct(\SplFileInfo $dataLocation, Notifier $notifier)
     {
         $this->dataLocation = $dataLocation;
+        $this->notifier     = $notifier;
     }
 
     /**
@@ -62,13 +72,11 @@ class DataBuilder
         try {
             $handler = $this->getHandlerForFile($this->dataLocation);
         } catch (InvalidPageException $e) {
-            echo $e->getMessage();
+            $this->writeLine($e->getMessage());
             continue;
         }
 
-        $data = $handler->getValue($this->dataLocation);
-
-        return $data;
+        return $handler->getValue($this->dataLocation);
     }
 
     /**
@@ -88,5 +96,15 @@ class DataBuilder
         }
 
         throw new InvalidDataFileException($file);
+    }
+
+    /**
+     * Write a line on the console stdOut
+     *
+     * @param  string $line
+     */
+    public function writeLine($line)
+    {
+        $this->notifier->writeLine($line);
     }
 }

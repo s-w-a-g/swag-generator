@@ -52,7 +52,7 @@ class DirectoryHandlerTest extends \PHPUnit_Framework_TestCase
     public function testDuplicateKeys($value='')
     {
         $dir = $this->getFixturesDir().'data';
-        $dataBuilder = $this->getDataBuilder($dir);
+        $dataBuilder = $this->getDataBuilder();
 
         $dirHandler = new DirectoryHandler();
         $dataBuilder->addDataHandler($dirHandler);

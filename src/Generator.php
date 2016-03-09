@@ -37,6 +37,8 @@ class Generator
             $loader    = new YamlFileLoader($container, new FileLocator(__DIR__));
             $loader->load(__DIR__.'/../config.yml');
 
+            $container->setParameter('console_output', $output);
+
             $resources = $container
                 ->get('swag.resources_conformer')
                 ->ensureResourcesAreWorkable($userDirectory, $destination);
