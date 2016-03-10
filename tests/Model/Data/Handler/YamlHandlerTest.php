@@ -31,7 +31,7 @@ class YamlHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetValue()
     {
-        $yml = $this->getFixturesDir().'data/swag.yml';
+        $yml = $this->getFixturesDir().'data/yaml.yml';
         $file = new \SplFileInfo($yml);
 
         $handler = new YamlHandler();

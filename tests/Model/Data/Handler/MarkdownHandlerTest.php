@@ -32,7 +32,7 @@ class MarkdownHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetValue()
     {
-        $md = $this->getFixturesDir().'data/swag.md';
+        $md = $this->getFixturesDir().'data/markdown.md';
         $file = new \SplFileInfo($md);
 
         $handler = new MarkdownHandler();
