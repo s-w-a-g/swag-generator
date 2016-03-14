@@ -65,16 +65,13 @@ class DataBuilder
     /**
      * Browse source directory to process user files
      *
+     * @throws InvalidDataFileException if dataLocation cannot be processed by any handler
+     *
      * @return array
      */
     public function processData()
     {
-        try {
-            $handler = $this->getHandlerForFile($this->dataLocation);
-        } catch (InvalidPageException $e) {
-            $this->writeLine($e->getMessage());
-            continue;
-        }
+        $handler = $this->getHandlerForFile($this->dataLocation);
 
         return $handler->getValue($this->dataLocation);
     }

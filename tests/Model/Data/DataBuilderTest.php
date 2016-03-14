@@ -28,6 +28,17 @@ class DataBuilderTest extends \PHPUnit_Framework_TestCase
         $dataBuilder->getHandlerForFile($dir);
     }
 
+    /**
+     * @expectedException Swag\Model\Data\Exception\InvalidDataFileException
+     */
+    public function testProcessInvalidData()
+    {
+        $dir = $this->getFixturesDir().'data/process/lol';
+        $dataBuilder = $this->getDataBuilder($dir);
+
+        $data = $dataBuilder->processData();
+    }
+
     public function testProcessData()
     {
         $dir = $this->getFixturesDir().'data/process';
