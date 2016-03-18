@@ -11,6 +11,7 @@ use Swag\Model\Data\DataBuilder;
 use Swag\Model\Data\Handler\DirectoryHandler;
 use Swag\Model\Data\Handler\MarkdownHandler;
 use Swag\Model\Data\Handler\YamlHandler;
+use Swag\Model\FileSystem\FileSystem;
 use Swag\Service\Notifier;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -41,5 +42,27 @@ trait TestCaseTrait
         $dataBuilder->addDataHandler(new MarkdownHandler());
 
         return $dataBuilder;
+    }
+
+    public function getTwigEnvironment($directory)
+    {
+        $loader = new \Twig_Loader_Filesystem($directory);
+
+        return new \Twig_Environment($loader, [
+            'cache' => false,
+            'autoescape' => false,
+        ]);
+    }
+
+    public function getFileSystem($source, $destination)
+    {
+        if (!($source instanceof \SplFileInfo)) {
+            $source = new \SplFileInfo($source);
+        }
+        if (!($destination instanceof \SplFileInfo)) {
+            $destination = new \SplFileInfo($destination);
+        }
+
+        return new FileSystem($source, $destination);
     }
 }
