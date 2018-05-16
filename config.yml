@@ -37,7 +37,7 @@ services:
         arguments: ['@swag.template_loader', "@=parameter('generator')['twig']"]
 
     swag.notifier:
-        class: Swag\Service\notifier
+        class: Swag\Service\Notifier
         arguments: ['%console_output%']
 
     # Pages generation
