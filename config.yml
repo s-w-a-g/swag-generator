@@ -1,9 +1,9 @@
 ---
 parameters:
     user:
-        # The directory (in user root folder) containing the assets Swag will use
+        # The directory (in user root folder) containing the assets Sw:ag will use
         # if null, the data & pages must be located at the root of the user folder
-        assets: swag
+        assets: raw_material
 
         # The directory Swag will use to build the data variable
         data: data
@@ -12,7 +12,7 @@ parameters:
         pages: pages
 
         # The destination directory where to put processed pages
-        destination: static_website
+        destination: web
 
     generator:
         twig:
